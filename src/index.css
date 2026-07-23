@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  @apply bg-bg text-txt font-arabic antialiased;
+  font-feature-settings: 'ss01' on;
+}
+
+html[dir='ltr'] body {
+  @apply font-body;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #2A3647 transparent;
+}
+*::-webkit-scrollbar { width: 6px; height: 6px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb { background: #2A3647; border-radius: 999px; }
+*::-webkit-scrollbar-thumb:hover { background: #3B4A61; }
+
+/* focus visibility for accessibility */
+:focus-visible {
+  outline: 2px solid #8B5CF6;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+@layer components {
+  .card {
+    @apply bg-bg-card border border-border rounded-xl shadow-card;
+  }
+
+  .skeleton {
+    @apply relative overflow-hidden bg-bg-hover rounded-lg;
+  }
+  .skeleton::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+    background-size: 700px 100%;
+    animation: shimmer 1.6s infinite linear;
+  }
+
+  .input-base {
+    @apply w-full bg-bg-sidebar border border-border rounded-lg px-4 py-2.5 text-sm text-txt placeholder:text-txt-muted
+      transition-all duration-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/25 outline-none;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-200
+      active:scale-[0.97] disabled:opacity-50 disabled:pointer-events-none select-none;
+  }
+}
+
+@media print {
+  body * { visibility: hidden; }
+  #print-area, #print-area * { visibility: visible; }
+  #print-area { position: absolute; top: 0; left: 0; width: 100%; }
+
+  /* Thermal receipt paper sizing — only one of these is present in the DOM
+     at a time (controlled by the receipt's paper-size toggle), so @page
+     picks up whichever width is active. */
+  .receipt-paper-58 { width: 58mm !important; }
+  .receipt-paper-80 { width: 80mm !important; }
+  @page { size: auto; margin: 3mm; }
+}
+
